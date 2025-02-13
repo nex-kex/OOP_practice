@@ -9,6 +9,37 @@ readme = "README.md"
 python = "^3.13"
 
 
+[tool.poetry.group.lint.dependencies]
+flake8 = "^7.1.1"
+black = "^25.1.0"
+isort = "^6.0.0"
+
+[tool.black]
+# Максимальная длина строки
+line-length = 119
+exclude = '''
+(\.git)
+'''
+
+[tool.isort]
+# Максимальная длина строки
+line_length = 119
+
+[tool.mypy]
+# Запрет на объявление функции без аннотации типов
+disallow_untyped_defs = true
+# Без этой опции аргументы функции могут иметь тип None в качестве параметра по умолчанию
+no_implicit_optional = true
+# mypy предупреждает, если в качестве возвращаемого типа было указано Any
+warn_return_any = true
+exclude = 'venv|tests'
+# Проверка корректности типизации в функции без аннотаций
+check_untyped_defs = true
+# Сообщает, если какой-то кусок кода никогда не выполняется
+warn_unreachable = true
+# Игнорирует локальный импорт
+ignore_missing_imports = true
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
