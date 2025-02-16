@@ -1,15 +1,15 @@
 import json
+import os
 
 from src.classes import Category, Product
 
 
-def read_json_file(file_path: str) -> list[dict]:
+def read_json_file(file_path: str) -> list:
     """Функция для считывания информации из JSON-файла."""
+    full_path = os.path.abspath(file_path)
 
-    with open(file_path, "r", encoding="utf-8") as f:
-        result = json.load(f)
-
-    return result
+    with open(full_path, "r", encoding="utf-8") as f:
+        return list(json.load(f))
 
 
 def get_categories_and_products(data: list[dict]) -> list[Category]:
@@ -22,10 +22,16 @@ def get_categories_and_products(data: list[dict]) -> list[Category]:
         list_of_products = []
 
         for product in category["products"]:
-            product = Product(product["name"], product["description"], product["price"], product["quantity"])
-            list_of_products.append(product)
+            list_of_products.append(Product(**product))
 
-        category = Category(category["name"], category["description"], list_of_products)
-        list_of_categories.append(category)
+        list_of_categories.append(Category(**category))
 
     return list_of_categories
+
+
+if __name__ == "__main__":
+    raw_data = read_json_file("../data/products.json")
+    all_categories = get_categories_and_products(raw_data)
+    for category in all_categories:
+        print(category.products, end=" ")
+        print()
