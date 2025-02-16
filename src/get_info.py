@@ -32,6 +32,6 @@ def get_categories_and_products(data: list[dict]) -> list[Category]:
 if __name__ == "__main__":
     raw_data = read_json_file("../data/products.json")
     all_categories = get_categories_and_products(raw_data)
-    for category in all_categories:
-        print(category.products, end=" ")
+    for one_category in all_categories:
+        print(one_category.products, end=" ")
         print()
