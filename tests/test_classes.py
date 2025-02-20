@@ -68,7 +68,13 @@ def test_new_new_product(product_dict):
 def test_category_init(category_phones, category_laptops):
     assert category_phones.name == "Смартфоны"
     assert category_phones.description == "Средство коммуникации"
-    assert len(category_phones.products) == 3
+    assert (
+        category_phones.products
+        == """Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.
+Iphone 15, 210000.0 руб. Остаток: 8 шт.
+Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.
+"""
+    )
 
     assert category_phones.category_count == 2
     assert category_laptops.category_count == 2
