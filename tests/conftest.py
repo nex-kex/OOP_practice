@@ -33,3 +33,13 @@ def category_laptops():
             Product("HP Pavilion 14", '512GB, Синий цвет, 14"', 60000.0, 7),
         ],
     )
+
+
+@pytest.fixture
+def product_dict():
+    return {
+        "name": "Samsung Galaxy S23 Ultra",
+        "description": "256GB, Серый цвет, 200MP камера",
+        "price": 280000.0,
+        "quantity": 3,
+    }
