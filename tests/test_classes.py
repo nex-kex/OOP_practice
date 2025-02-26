@@ -44,6 +44,7 @@ def test_price_setter_new_higher_price(product_phone):
 
 
 def test_new_product():
+    Product.all_products = []
     new_product = Product.new_product(
         {"name": '55" QLED 4K', "description": "Фоновая подсветка", "price": 123000.0, "quantity": 7}
     )
@@ -52,20 +53,20 @@ def test_new_product():
     assert new_product.price == 123000.0
     assert new_product.quantity == 7
 
-    assert len(new_product._Product__all_products) == 6
+    assert len(new_product.all_products) == 1
 
 
-def test_new_new_product(product_dict):
+def test_new_new_product(product_phone, product_dict):
     new_product = Product.new_product(product_dict)
     assert new_product.name == "Samsung Galaxy S23 Ultra"
     assert new_product.description == "256GB, Серый цвет, 200MP камера"
     assert new_product.price == 280000.0
     assert new_product.quantity == 8
 
-    assert len(new_product._Product__all_products) == 6
+    assert len(new_product.all_products) == 2
 
 
-def test_category_init(category_phones, category_laptops):
+def test_category_init(category_phones, category_laptops, product_phone):
     assert category_phones.name == "Смартфоны"
     assert category_phones.description == "Средство коммуникации"
     assert (
@@ -84,8 +85,29 @@ Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.
     assert category_laptops.product_count == 7
     assert Category.product_count == 7
 
-
-def test_add_product(category_phones, product_phone):
-    assert Category.product_count == 10
     category_phones.add_product(product_phone)
-    assert Category.product_count == 11
+    assert Category.product_count == 8
+
+
+def test_product_add():
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+
+    assert product1 + product2 == 5 * 180000.0 + 8 * 210000.0
+
+
+def test_category_str():
+    Category.product_count = 0
+    Category.category_count = 0
+
+    phones = Category(
+        name="Смартфоны",
+        description="Средство коммуникации",
+        products=[
+            Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5),
+            Product("Iphone 15", "512GB, Gray space", 210000.0, 8),
+            Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14),
+        ],
+    )
+
+    assert str(phones) == """Смартфоны, количество продуктов: 27 шт."""

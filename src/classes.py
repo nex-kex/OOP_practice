@@ -4,7 +4,7 @@ from typing import Any
 class Product:
     """Класс для представления продуктов."""
 
-    __all_products: list = []
+    all_products: list = []
 
     def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
@@ -12,7 +12,7 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
-        Product.__all_products.append(self)
+        Product.all_products.append(self)
 
 
     def __str__(self):
@@ -48,7 +48,7 @@ class Product:
     def new_product(cls, product_dict: dict) -> Any:
 
         name = product_dict["name"]
-        for product in Product.__all_products:
+        for product in Product.all_products:
 
             if product.name == name:
                 product.quantity += product_dict["quantity"]
