@@ -14,9 +14,15 @@ class Product:
 
         Product.__all_products.append(self)
 
+
+    def __str__(self):
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+
     @property
     def price(self) -> float:
         return self.__price
+
 
     @price.setter
     def price(self, new_price: float) -> None:
@@ -32,6 +38,7 @@ class Product:
                 self.__price = new_price
         elif new_price >= self.__price:
             self.__price = new_price
+
 
     @classmethod
     def new_product(cls, product_dict: dict) -> Any:
@@ -64,13 +71,22 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(self.__products)
 
+
+    def __str__(self):
+        total_products = 0
+        for product in self.__products:
+            total_products += product.quantity
+        return f"{self.name}, количество продуктов: {total_products} шт."
+
+
     def add_product(self, product: Product) -> None:
         self.__products.append(product)
         Category.product_count += 1
+
 
     @property
     def products(self) -> str:
         answer = ""
         for product in self.__products:
-            answer += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            answer += str(f"{product}\n")
         return answer
