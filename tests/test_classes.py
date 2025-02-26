@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from src.classes import Category, Product
+from src.classes import Category, CategoryIteration, Product
 
 
 def test_product_init(product_phone):
@@ -69,13 +69,11 @@ def test_new_new_product(product_phone, product_dict):
 def test_category_init(category_phones, category_laptops, product_phone):
     assert category_phones.name == "Смартфоны"
     assert category_phones.description == "Средство коммуникации"
-    assert (
-        category_phones.products
-        == """Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.
-Iphone 15, 210000.0 руб. Остаток: 8 шт.
-Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.
-"""
-    )
+    assert category_phones.products == [
+        "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.",
+        "Iphone 15, 210000.0 руб. Остаток: 8 шт.",
+        "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.",
+    ]
 
     assert category_phones.category_count == 2
     assert category_laptops.category_count == 2
@@ -111,3 +109,30 @@ def test_category_str():
     )
 
     assert str(phones) == """Смартфоны, количество продуктов: 27 шт."""
+
+
+def test_category_iteration_init():
+    Category.product_count = 0
+    Category.category_count = 0
+
+    category_iterator = CategoryIteration(
+        Category(
+            name="Смартфоны",
+            description="Средство коммуникации",
+            products=[
+                Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5),
+                Product("Iphone 15", "512GB, Gray space", 210000.0, 8),
+                Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14),
+            ],
+        )
+    )
+
+    assert category_iterator.end == 3
+
+    category_list = list(str(x) for x in category_iterator)
+    assert category_list == [
+        "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.",
+        "Iphone 15, 210000.0 руб. Остаток: 8 шт.",
+        "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.",
+    ]
+    assert str(category_iterator[2]) == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
