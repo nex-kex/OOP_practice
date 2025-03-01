@@ -2,8 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.classes import Category, CategoryIteration, Product, Smartphone, LawnGrass
-
+from src.classes import Category, CategoryIteration, LawnGrass, Product, Smartphone
 
 # Product tests
 
@@ -26,8 +25,8 @@ def test_price_setter_new_lower_price_changed(product_phone, capsys):
         product_phone.price = 100
         captured = capsys.readouterr()
         assert (
-                captured.out
-                == "Новая цена товара (100) ниже предыдущей (180000.0). Вы уверены, что вы хотите снизить цену? (y/n)\n"
+            captured.out
+            == "Новая цена товара (100) ниже предыдущей (180000.0). Вы уверены, что вы хотите снизить цену? (y/n)\n"
         )
         assert product_phone.price == 100
 
@@ -37,8 +36,8 @@ def test_price_setter_new_lower_price_not_changed(product_phone, capsys):
         product_phone.price = 100
         captured = capsys.readouterr()
         assert (
-                captured.out
-                == "Новая цена товара (100) ниже предыдущей (180000.0). Вы уверены, что вы хотите снизить цену? (y/n)\n"
+            captured.out
+            == "Новая цена товара (100) ниже предыдущей (180000.0). Вы уверены, что вы хотите снизить цену? (y/n)\n"
         )
         assert product_phone.price == 180000.0
 
@@ -85,8 +84,9 @@ def test_product_add():
 
 
 def test_smartphone_init(product_phone):
-    smartphone1 = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
-                             "S23 Ultra", 256, "Серый")
+    smartphone1 = Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
+    )
     assert smartphone1.name == "Samsung Galaxy S23 Ultra"
     assert smartphone1.description == "256GB, Серый цвет, 200MP камера"
     assert smartphone1.price == 180000.0
@@ -98,8 +98,9 @@ def test_smartphone_init(product_phone):
 
 
 def test_smartphone_add():
-    smartphone1 = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
-                             "S23 Ultra", 256, "Серый")
+    smartphone1 = Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
+    )
     smartphone2 = Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space")
 
     assert smartphone1 + smartphone2 == 5 * 180000.0 + 8 * 210000.0

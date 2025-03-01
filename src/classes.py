@@ -58,6 +58,54 @@ class Product:
         return Product(**product_dict)
 
 
+class Smartphone(Product):
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    def __add__(self, other: Any) -> Any:
+        if issubclass(type(other), Smartphone):
+            return self.quantity * self.price + other.quantity * other.price
+        raise TypeError("Можно складывать только товары одного типа.")
+
+
+class LawnGrass(Product):
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+    def __add__(self, other: Any) -> Any:
+        if issubclass(type(other), LawnGrass):
+            return self.quantity * self.price + other.quantity * other.price
+        raise TypeError("Можно складывать только товары одного типа.")
+
+
 class Category:
     """Класс для представления категорий продуктов."""
 
@@ -78,7 +126,7 @@ class Category:
             total_products += product.quantity
         return f"{self.name}, количество продуктов: {total_products} шт."
 
-    def add_product(self, product: Product) -> None:
+    def add_product(self, product: object) -> None:
         if isinstance(product, Product):
             self.__products.append(product)
             Category.product_count += 1
@@ -112,36 +160,3 @@ class CategoryIteration:
 
     def __getitem__(self, index: int) -> Any:
         return self.products[index]
-
-
-class Smartphone(Product):
-
-    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency: float, model: str,
-                 memory: int, color: str):
-        super().__init__(name, description, price, quantity)
-        self.efficiency = efficiency
-        self.model = model
-        self.memory = memory
-        self.color = color
-
-
-    def __add__(self, other: Any) -> Any:
-        if issubclass(type(other), Smartphone):
-            return self.quantity * self.price + other.quantity * other.price
-        raise TypeError("Можно складывать только товары одного типа.")
-
-
-class LawnGrass(Product):
-
-    def __init__(self, name: str, description: str, price: float, quantity: int, country: str,
-                 germination_period: str, color: str):
-        super().__init__(name, description, price, quantity)
-        self.country = country
-        self.germination_period = germination_period
-        self.color = color
-
-
-    def __add__(self, other: Any) -> Any:
-        if issubclass(type(other), LawnGrass):
-            return self.quantity * self.price + other.quantity * other.price
-        raise TypeError("Можно складывать только товары одного типа.")
