@@ -4,7 +4,7 @@ from typing import Any
 class Product:
     """Класс для представления продуктов."""
 
-    __all_products: list = []
+    all_products: list = []
 
     def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
@@ -12,7 +12,13 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
-        Product.__all_products.append(self)
+        Product.all_products.append(self)
+
+    def __str__(self) -> str:
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other: Any) -> Any:
+        return self.quantity * self.__price + other.quantity * other.__price
 
     @property
     def price(self) -> float:
@@ -37,7 +43,7 @@ class Product:
     def new_product(cls, product_dict: dict) -> Any:
 
         name = product_dict["name"]
-        for product in Product.__all_products:
+        for product in Product.all_products:
 
             if product.name == name:
                 product.quantity += product_dict["quantity"]
@@ -64,13 +70,40 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(self.__products)
 
+    def __str__(self) -> str:
+        total_products = 0
+        for product in self.__products:
+            total_products += product.quantity
+        return f"{self.name}, количество продуктов: {total_products} шт."
+
     def add_product(self, product: Product) -> None:
         self.__products.append(product)
         Category.product_count += 1
 
     @property
-    def products(self) -> str:
-        answer = ""
+    def products(self) -> list:
+        answer = []
         for product in self.__products:
-            answer += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            answer.append(str(product))
         return answer
+
+
+class CategoryIteration:
+
+    def __init__(self, my_category: Category):
+        self.products = my_category.products
+        self.end = len(self.products)
+
+    def __iter__(self) -> Any:
+        self.current_index = -1
+        return self
+
+    def __next__(self) -> Any:
+        if self.current_index + 1 < self.end:
+            self.current_index += 1
+            return self.products[self.current_index]
+        else:
+            raise StopIteration
+
+    def __getitem__(self, index: int) -> Any:
+        return self.products[index]
