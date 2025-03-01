@@ -18,7 +18,9 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Any) -> Any:
-        return self.quantity * self.__price + other.quantity * other.__price
+        if issubclass(type(other), Product):
+            return self.quantity * self.__price + other.quantity * other.__price
+        raise TypeError("Можно складывать только товары одного типа.")
 
     @property
     def price(self) -> float:
@@ -120,6 +122,12 @@ class Smartphone(Product):
         self.color = color
 
 
+    def __add__(self, other: Any) -> Any:
+        if issubclass(type(other), Smartphone):
+            return self.quantity * self.price + other.quantity * other.price
+        raise TypeError("Можно складывать только товары одного типа.")
+
+
 class LawnGrass(Product):
 
     def __init__(self, name: str, description: str, price: float, quantity: int, country: str,
@@ -128,3 +136,9 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
+
+
+    def __add__(self, other: Any) -> Any:
+        if issubclass(type(other), LawnGrass):
+            return self.quantity * self.price + other.quantity * other.price
+        raise TypeError("Можно складывать только товары одного типа.")
