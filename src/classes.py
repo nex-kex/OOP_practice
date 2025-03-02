@@ -1,23 +1,26 @@
-from typing import Any
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class BaseProduct(ABC):
     """Базовый абстрактный класс для продуктов."""
 
     @abstractmethod
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     @abstractmethod
-    def __add__(self):
+    def __add__(self, other: Any) -> Any:
         pass
 
 
 class MixinLog:
+    """Миксин-класс для экземпляров класса Product для вывода информации о них."""
+
+    __slots__ = ("name", "description", "price", "quantity")
 
     def __repr__(self) -> str:
-         return f"{self.__class__.__name__}(\"{self.name}\", \"{self.description}\", {self.price}, {self.quantity})"
+        return f'{self.__class__.__name__}("{self.name}", "{self.description}", {self.price}, {self.quantity})'
 
 
 class Product(BaseProduct, MixinLog):
@@ -131,11 +134,11 @@ class LawnGrass(Product):
 class BaseCategory(ABC):
 
     @abstractmethod
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     @abstractmethod
-    def __str__(self):
+    def __str__(self) -> str:
         pass
 
 
@@ -175,14 +178,15 @@ class Category(BaseCategory):
 
 
 class Order(BaseCategory):
+    """Класс для представления заказов."""
 
     def __init__(self, product: Product, amount: int):
         self.product = product
         self.amount = amount
         self.price = amount * product.price
 
-    def __str__(self):
-        return f"Заказ на \"{self.product.name}\": {self.amount} шт. на общую стоимость {self.price} руб."
+    def __str__(self) -> str:
+        return f'Заказ на "{self.product.name}": {self.amount} шт. на общую стоимость {self.price} руб.'
 
 
 class CategoryIteration:

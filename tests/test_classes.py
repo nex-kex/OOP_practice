@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.classes import Category, CategoryIteration, LawnGrass, Product, Smartphone, Order
+from src.classes import Category, CategoryIteration, LawnGrass, Order, Product, Smartphone
 
 # Product tests
 
@@ -213,4 +213,4 @@ def test_order_init(product_phone):
     assert order1.amount == 12
     assert order1.price == product_phone.price * 12
 
-    assert str(order1) == "Заказ на \"Samsung Galaxy S23 Ultra\": 12 шт. на общую стоимость 2160000.0 руб."
+    assert str(order1) == 'Заказ на "Samsung Galaxy S23 Ultra": 12 шт. на общую стоимость 2160000.0 руб.'
