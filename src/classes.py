@@ -16,8 +16,8 @@ class BaseProduct(ABC):
 
 class MixinLog:
 
-    def __repr__(self):
-         return f"{self.__class__}({self.name}, {self.description}, {self.price}, {self.quantity})"
+    def __repr__(self) -> str:
+         return f"{self.__class__.__name__}(\"{self.name}\", \"{self.description}\", {self.price}, {self.quantity})"
 
 
 class Product(BaseProduct, MixinLog):
@@ -32,6 +32,7 @@ class Product(BaseProduct, MixinLog):
         self.quantity = quantity
 
         Product.all_products.append(self)
+        print(super().__repr__())
 
     def __str__(self) -> str:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
