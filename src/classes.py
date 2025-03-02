@@ -1,7 +1,26 @@
 from typing import Any
+from abc import ABC, abstractmethod
 
 
-class Product:
+class BaseProduct(ABC):
+    """Базовый абстрактный класс для продуктов."""
+
+    @abstractmethod
+    def __init__(self, *args):
+        pass
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+
+class MixinLog:
+
+    def __repr__(self):
+         return f"{self.__class__}({self.name}, {self.description}, {self.price}, {self.quantity})"
+
+
+class Product(BaseProduct, MixinLog):
     """Класс для представления продуктов."""
 
     all_products: list = []
@@ -59,6 +78,7 @@ class Product:
 
 
 class Smartphone(Product):
+    """Класс для представления смартфонов."""
 
     def __init__(
         self,
@@ -84,6 +104,7 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
+    """Класс для представления травы газонной."""
 
     def __init__(
         self,
@@ -142,6 +163,7 @@ class Category:
 
 
 class CategoryIteration:
+    """Класс для реализации итерации по категориям продуктов."""
 
     def __init__(self, my_category: Category):
         self.products = my_category.products
