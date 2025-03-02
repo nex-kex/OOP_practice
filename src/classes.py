@@ -6,11 +6,11 @@ class BaseProduct(ABC):
     """Базовый абстрактный класс для продуктов."""
 
     @abstractmethod
-    def __init__(self, *args):
+    def __init__(self):
         pass
 
     @abstractmethod
-    def __add__(self, other):
+    def __add__(self):
         pass
 
 
@@ -128,7 +128,18 @@ class LawnGrass(Product):
         raise TypeError("Можно складывать только товары одного типа.")
 
 
-class Category:
+class BaseCategory(ABC):
+
+    @abstractmethod
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+
+class Category(BaseCategory):
     """Класс для представления категорий продуктов."""
 
     category_count = 0
@@ -161,6 +172,17 @@ class Category:
         for product in self.__products:
             answer.append(str(product))
         return answer
+
+
+class Order(BaseCategory):
+
+    def __init__(self, product: Product, amount: int):
+        self.product = product
+        self.amount = amount
+        self.price = amount * product.price
+
+    def __str__(self):
+        return f"Заказ на \"{self.product.name}\": {self.amount} шт. на общую стоимость {self.price} руб."
 
 
 class CategoryIteration:
