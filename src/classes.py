@@ -1,7 +1,29 @@
+from abc import ABC, abstractmethod
 from typing import Any
 
 
-class Product:
+class BaseProduct(ABC):
+    """Базовый абстрактный класс для продуктов."""
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
+
+    @abstractmethod
+    def __add__(self, other: Any) -> Any:
+        pass
+
+
+class MixinLog:
+    """Миксин-класс для экземпляров класса Product для вывода информации о них."""
+
+    __slots__ = ("name", "description", "price", "quantity")
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}("{self.name}", "{self.description}", {self.price}, {self.quantity})'
+
+
+class Product(BaseProduct, MixinLog):
     """Класс для представления продуктов."""
 
     all_products: list = []
@@ -13,6 +35,7 @@ class Product:
         self.quantity = quantity
 
         Product.all_products.append(self)
+        print(super().__repr__())
 
     def __str__(self) -> str:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
@@ -59,6 +82,7 @@ class Product:
 
 
 class Smartphone(Product):
+    """Класс для представления смартфонов."""
 
     def __init__(
         self,
@@ -84,6 +108,7 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
+    """Класс для представления травы газонной."""
 
     def __init__(
         self,
@@ -106,7 +131,18 @@ class LawnGrass(Product):
         raise TypeError("Можно складывать только товары одного типа.")
 
 
-class Category:
+class BaseCategory(ABC):
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
+
+    @abstractmethod
+    def __str__(self) -> str:
+        pass
+
+
+class Category(BaseCategory):
     """Класс для представления категорий продуктов."""
 
     category_count = 0
@@ -141,7 +177,20 @@ class Category:
         return answer
 
 
+class Order(BaseCategory):
+    """Класс для представления заказов."""
+
+    def __init__(self, product: Product, amount: int):
+        self.product = product
+        self.amount = amount
+        self.price = amount * product.price
+
+    def __str__(self) -> str:
+        return f'Заказ на "{self.product.name}": {self.amount} шт. на общую стоимость {self.price} руб.'
+
+
 class CategoryIteration:
+    """Класс для реализации итерации по категориям продуктов."""
 
     def __init__(self, my_category: Category):
         self.products = my_category.products

@@ -43,6 +43,13 @@ warn_unreachable = true
 # Игнорирует локальный импорт
 ignore_missing_imports = true
 
+[tool.coverage.report]
+omit = [
+    "src/main.py",
+    "src/get_info.py"
+]
+exclude_also = ["@abstractmethod"]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

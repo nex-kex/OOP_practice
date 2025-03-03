@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.classes import Category, CategoryIteration, LawnGrass, Product, Smartphone
+from src.classes import Category, CategoryIteration, LawnGrass, Order, Product, Smartphone
 
 # Product tests
 
@@ -202,3 +202,15 @@ def test_category_iteration_init():
         "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.",
     ]
     assert str(category_iterator[2]) == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
+
+
+# Order tests
+
+
+def test_order_init(product_phone):
+    order1 = Order(product_phone, 12)
+    assert order1.product == product_phone
+    assert order1.amount == 12
+    assert order1.price == product_phone.price * 12
+
+    assert str(order1) == 'Заказ на "Samsung Galaxy S23 Ultra": 12 шт. на общую стоимость 2160000.0 руб.'
