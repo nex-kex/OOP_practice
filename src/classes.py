@@ -18,7 +18,9 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Any) -> Any:
-        return self.quantity * self.__price + other.quantity * other.__price
+        if type(other) is self.__class__:
+            return self.quantity * self.__price + other.quantity * other.__price
+        raise TypeError("Можно складывать только товары одного типа.")
 
     @property
     def price(self) -> float:
@@ -56,6 +58,54 @@ class Product:
         return Product(**product_dict)
 
 
+class Smartphone(Product):
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    def __add__(self, other: Any) -> Any:
+        if type(other) is self.__class__:
+            return self.quantity * self.price + other.quantity * other.price
+        raise TypeError("Можно складывать только товары одного типа.")
+
+
+class LawnGrass(Product):
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+    def __add__(self, other: Any) -> Any:
+        if type(other) is self.__class__:
+            return self.quantity * self.price + other.quantity * other.price
+        raise TypeError("Можно складывать только товары одного типа.")
+
+
 class Category:
     """Класс для представления категорий продуктов."""
 
@@ -76,9 +126,12 @@ class Category:
             total_products += product.quantity
         return f"{self.name}, количество продуктов: {total_products} шт."
 
-    def add_product(self, product: Product) -> None:
-        self.__products.append(product)
-        Category.product_count += 1
+    def add_product(self, product: object) -> None:
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError("Можно создавать категории только из продуктов.")
 
     @property
     def products(self) -> list:
