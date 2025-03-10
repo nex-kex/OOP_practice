@@ -10,7 +10,10 @@ class Product:
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        else:
+            self.quantity = quantity
 
         Product.all_products.append(self)
 
@@ -132,6 +135,12 @@ class Category:
             Category.product_count += 1
         else:
             raise TypeError("Можно создавать категории только из продуктов.")
+
+    def middle_price(self):
+        try:
+            return round(sum(list(map(lambda x: x.price, self.__products)))/len(self.__products), 2)
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def products(self) -> list:
