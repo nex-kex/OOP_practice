@@ -13,6 +13,9 @@ def test_product_init(product_phone):
     assert product_phone.price == 180000.0
     assert product_phone.quantity == 5
 
+    with pytest.raises(ValueError):
+        product1 = Product("name", "description", 100, 0)
+
 
 def test_price_setter_zero(product_phone, capsys):
     product_phone.price = 0
@@ -175,6 +178,13 @@ def test_category_str():
     )
 
     assert str(phones) == """Смартфоны, количество продуктов: 27 шт."""
+
+
+def test_middle_price(category_laptops):
+    assert category_laptops.middle_price() == 287500.0
+
+    category_empty = Category("Пустая категория", "Категория без продуктов", [])
+    assert category_empty.middle_price() == 0.0
 
 
 def test_category_iteration_init():
